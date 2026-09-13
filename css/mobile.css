@@ -327,24 +327,28 @@
   }
 
   /* ============ HEADER ============ */
+  /* one row, <= 64px. The wordmark gives way to the mark so the live price,
+     the feed/allowance chips and the plan badge all fit a single strip. */
   .topbar {
     height: auto;
-    min-height: 52px;
+    min-height: 56px;
     flex: 0 0 auto;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    align-items: center;
     gap: 8px;
-    padding: calc(env(safe-area-inset-top, 0px) + 6px) 10px 0 0;
+    padding: calc(env(safe-area-inset-top, 0px)) 10px 0 0;
     row-gap: 0;
   }
-  .brand-full { padding-left: 12px; gap: 8px; }
-  .brand-name { font-size: 11px; letter-spacing: .14em; }
+  .brand-full { padding-left: 12px; gap: 8px; flex: 0 0 auto; }
+  .brand-name { display: none; }
   .brand-mark svg { width: 20px; height: 20px; }
 
   /* proxied by the mobile control row */
   .topbar .pair-select,
   .topbar .tf-group { display: none; }
 
-  .top-spacer { flex: 1 1 auto; }
+  /* the price block takes the slack instead, so spread/close never ellipsise */
+  .top-spacer { display: none; }
 
   .chipbar { gap: 6px; }
   .chip { height: 28px; padding: 0 8px; font-size: 9.5px; }
@@ -357,22 +361,39 @@
   .account .avatar { display: none; }
   .plan-badge { font-size: 8.5px; padding: 4px 7px; }
 
-  /* price strip — full width row under the header */
+  /* price — two compact lines inside the single header row, so spread and
+     close time survive on mobile instead of being dropped */
   .price-block {
-    order: 9;
-    width: 100%;
-    flex: 0 0 100%;
+    order: 0;
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 0;
     margin: 0;
-    padding: 7px 12px 8px;
-    border-top: 1px solid var(--line);
-    display: flex;
+    padding: 0;
+    border-top: 0;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-areas: "price chg" "meta meta";
     align-items: baseline;
-    gap: 10px;
-    flex-wrap: wrap;
+    column-gap: 7px;
+    row-gap: 1px;
   }
-  .price-main { font-size: clamp(17px, 5.2vw, 21px); padding: 0; }
-  .price-chg { font-size: 12px; }
-  .price-meta { font-size: 10px; margin-left: auto; white-space: nowrap; }
+  .price-main {
+    grid-area: price;
+    font-size: clamp(16px, 4.6vw, 19px);
+    line-height: 1.05;
+    padding: 0;
+  }
+  .price-chg { grid-area: chg; font-size: 11px; }
+  .price-meta {
+    grid-area: meta;
+    font-size: 9.5px;
+    margin-left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .chipbar, .account { flex: 0 0 auto; }
 
   /* ============ MOBILE CONTROL ROW (built by mobile-shell.js) ============ */
   .m-controls {
@@ -393,6 +414,7 @@
     justify-content: center;
     gap: 1px;
     min-height: 46px;
+    min-width: 44px;
     padding: 0 11px;
     border: 1px solid var(--line-2);
     border-radius: 6px;
@@ -882,12 +904,15 @@
    ============================================================ */
 @media (max-width: 390px) {
   .m-controls { gap: 6px; padding: 7px 8px; }
-  .m-ctl { padding: 0 9px; }
+  .m-ctl { padding: 0 9px; min-width: 44px; }
   .m-ctl .v { font-size: 12px; }
   .m-analyze { font-size: 12px; letter-spacing: .12em; }
-  .brand-name { font-size: 10px; letter-spacing: .1em; }
   .chip { padding: 0 7px; }
-  .price-meta { font-size: 9.5px; }
+  .price-meta { font-size: 9px; }
+  /* at 360px the strip cannot hold the feed chip and the full spread/close
+     line at once. The allowance chip is the more useful of the two, and feed
+     liveness is already visible in the ticking price. */
+  .chip.live { display: none; }
   .m-sec { padding: 0 12px; }
   .m-sec-h { display: none; }
   .rm-row { grid-template-columns: 12px 1fr auto 30px 10px; padding: 0 12px; font-size: 12px; }
@@ -903,9 +928,9 @@
    ============================================================ */
 @media (max-width: 900px) and (orientation: landscape) and (max-height: 520px) {
   .chart-stack { height: clamp(220px, 62dvh, 320px); }
-  .topbar { min-height: 46px; }
+  .topbar { min-height: 52px; }
   .m-controls { padding: 6px 10px; }
-  .m-ctl, .m-analyze { min-height: 42px; }
+  .m-ctl, .m-analyze { min-height: 44px; }
   .m-nav-b { min-height: 46px; }
   .verdict-card { max-height: calc(100dvh - 20px); }
   .vc-hero { grid-template-columns: auto 1fr 1fr; }
