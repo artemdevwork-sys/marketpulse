@@ -19,7 +19,9 @@
 (function (global) {
   'use strict';
 
-  const MQ = '(max-width: 767px)';
+  // portrait phones, plus landscape phones which are too wide for 767px
+  // but far too short for the desktop/tablet layout
+  const MQ = '(max-width: 767px), (orientation: landscape) and (max-height: 520px) and (max-width: 1199px)';
   const $ = s => document.querySelector(s);
   const $$ = s => Array.prototype.slice.call(document.querySelectorAll(s));
 

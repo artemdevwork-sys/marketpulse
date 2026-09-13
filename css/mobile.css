@@ -284,7 +284,7 @@
    TABLET — 768 to 1199
    Keep the two-pane feel but drop the fixed left column.
    ============================================================ */
-@media (min-width: 768px) and (max-width: 1199px) {
+@media (min-width: 768px) and (max-width: 1199px) and (min-height: 521px) {
   :root { --w-right: 300px; --w-left: 0px; }
   .left-panel { display: none; }
   .verdict-card { width: min(420px, 56vw); margin-right: min(120px, 10vw); }
@@ -298,7 +298,7 @@
 /* ============================================================
    MOBILE — <= 767px
    ============================================================ */
-@media (max-width: 767px) {
+@media (max-width: 767px), (orientation: landscape) and (max-height: 520px) and (max-width: 1199px) {
 
   /* ---- the page must scroll. tokens.css locks the desktop terminal
      to the viewport with overflow:hidden; a phone needs the opposite. ---- */
