@@ -1819,5 +1819,5 @@
     return reading;
   }
 
-  global.MP.UI = { init, setPlan, setPair, runAnalysis, openView, PLANS, getReading, chargeReading };
+  global.MP.UI = { init, setPlan, setPair, runAnalysis, openView, PLANS, getReading, chargeReading, renderSub };
 })(window);
